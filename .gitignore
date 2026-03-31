@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+server/node_modules
+
+# Build output
+dist
+
+# Environment variables (set these in Vercel / Railway dashboards)
+.env
+.env.local
+server/.env
+
+# Editor / tool files
+.claude
+
+# OS
+.DS_Store
+Thumbs.db

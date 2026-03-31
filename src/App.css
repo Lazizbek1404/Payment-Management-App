@@ -1,0 +1,111 @@
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(11, 58, 62, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(11, 58, 62, 0.3);
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #1EEBBA;
+  outline-offset: 2px;
+}
+
+/* Table row hover animation */
+.table-row-hover {
+  transition: background-color 0.2s ease;
+}
+
+/* Card hover lift effect */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(11, 58, 62, 0.12);
+}
+
+/* Button press effect */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Input focus animation */
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(30, 235, 186, 0.15);
+}
+
+/* Status badge pulse for overdue */
+@keyframes pulse-red {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.status-overdue {
+  animation: pulse-red 2s ease-in-out infinite;
+}
+
+/* Chart tooltip styling */
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.recharts-default-tooltip {
+  background-color: #0B3A3E !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.recharts-tooltip-label {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.recharts-tooltip-item {
+  color: #1EEBBA !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .lg\:ml-64 {
+    margin-left: 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}

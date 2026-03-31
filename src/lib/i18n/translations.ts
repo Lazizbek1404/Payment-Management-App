@@ -1,0 +1,190 @@
+export const translations = {
+  en: {
+    // Common
+    appName: 'CoursePay',
+    loading: 'Loading...',
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    edit: 'Edit',
+    view: 'View',
+    viewAll: 'View All',
+    optional: 'Optional',
+    search: 'Search',
+    filter: 'Filter',
+    close: 'Close',
+    confirm: 'Confirm',
+    back: 'Back',
+    
+    // Navigation
+    dashboard: 'Dashboard',
+    clients: 'Clients',
+    addClient: 'Add Client',
+    settings: 'Settings',
+    logout: 'Logout',
+    
+    // Login
+    login: 'Login',
+    username: 'Username',
+    password: 'Password',
+    loginError: 'Invalid username or password',
+    
+    // Dashboard
+    totalClients: 'Total Clients',
+    overdueClients: 'Overdue Clients',
+    totalMoneyCollected: 'Total Money Collected',
+    thisMonth: 'this month',
+    needsAttention: 'Needs attention',
+    ytd: 'YTD',
+    monthlyCollection: 'Monthly Collection',
+    addNewClient: 'Add New Client',
+    
+    // Clients List
+    clientsTitle: 'Clients',
+    searchPlaceholder: 'Search by name or phone',
+    all: 'All',
+    paying: 'Paying',
+    overdue: 'Overdue',
+    completed: 'Completed',
+    name: 'Name',
+    phone: 'Phone',
+    telegram: 'Telegram',
+    course: 'Course',
+    status: 'Status',
+    nextPayment: 'Next Payment',
+    actions: 'Actions',
+    noClients: 'No clients yet. Add your first client to begin.',
+    deleteConfirm: 'Are you sure you want to delete this client?',
+    
+    // Add Client Form
+    addClientTitle: 'Add New Client',
+    fullName: 'Full Name',
+    phoneNumber: 'Phone Number',
+    telegramUsername: 'Telegram Username',
+    courseName: 'Course Name',
+    coursePrice: 'Course Price (UZS)',
+    installmentPrice: 'Installment Price (UZS)',
+    numberOfMonths: 'Number of Months',
+    startDate: 'Start Date',
+    monthlyPayment: 'Monthly Payment',
+    remainingBalance: 'Remaining Balance',
+    saveClient: 'Save Client',
+    clientSaved: 'Client saved successfully',
+    
+    // Client Detail
+    profile: 'Profile',
+    paymentSchedule: 'Payment Schedule',
+    paymentHistory: 'Payment History',
+    totalPrice: 'Total Price',
+    paidSoFar: 'Paid So Far',
+    remaining: 'Remaining',
+    markAsPaid: 'Mark as Paid',
+    paymentAmount: 'Payment Amount',
+    paymentDate: 'Payment Date',
+    note: 'Note',
+    month: 'Month',
+    dueDate: 'Due Date',
+    amount: 'Amount',
+    noPayments: 'No payments recorded yet',
+    
+    // Status
+    statusPaying: 'Paying',
+    statusOverdue: 'Overdue',
+    statusCompleted: 'Completed',
+  },
+  uz: {
+    // Common
+    appName: 'CoursePay',
+    loading: 'Yuklanmoqda...',
+    save: 'Saqlash',
+    cancel: 'Bekor qilish',
+    delete: "O'chirish",
+    edit: 'Tahrirlash',
+    view: "Ko'rish",
+    viewAll: 'Hammasini korish',
+    optional: 'Ixtiyoriy',
+    search: 'Qidirish',
+    filter: 'Filtrlash',
+    close: 'Yopish',
+    confirm: 'Tasdiqlash',
+    back: 'Orqaga',
+    
+    // Navigation
+    dashboard: 'Boshqaruv paneli',
+    clients: 'Mijozlar',
+    addClient: 'Mijoz qoshish',
+    settings: 'Sozlamalar',
+    logout: 'Chiqish',
+    
+    // Login
+    login: 'Kirish',
+    username: 'Foydalanuvchi nomi',
+    password: 'Parol',
+    loginError: 'Notogri foydalanuvchi nomi yoki parol',
+    
+    // Dashboard
+    totalClients: 'Jami mijozlar',
+    overdueClients: 'Muddati otgan mijozlar',
+    totalMoneyCollected: 'Jami yigilgan pul',
+    thisMonth: 'shu oyda',
+    needsAttention: 'Eslatma talab etiladi',
+    ytd: 'Yil boshidan',
+    monthlyCollection: 'Oylik yigim',
+    addNewClient: 'Yangi mijoz qoshish',
+    
+    // Clients List
+    clientsTitle: 'Mijozlar',
+    searchPlaceholder: 'Ism yoki telefon boicha qidirish',
+    all: 'Hammasi',
+    paying: 'Tolayotgan',
+    overdue: 'Muddati otgan',
+    completed: 'Tugallangan',
+    name: 'Ism',
+    phone: 'Telefon',
+    telegram: 'Telegram',
+    course: 'Kurs',
+    status: 'Holat',
+    nextPayment: 'Keyingi tolov',
+    actions: 'Harakatlar',
+    noClients: 'Hali mijozlar yoq. Boshlash uchun birinchi mijozingizni qoshng.',
+    deleteConfirm: 'Bu mijozni ochirishni xohlaysizmi?',
+    
+    // Add Client Form
+    addClientTitle: 'Yangi mijoz qoshish',
+    fullName: 'Toliq ism',
+    phoneNumber: 'Telefon raqami',
+    telegramUsername: 'Telegram foydalanuvchi nomi',
+    courseName: 'Kurs nomi',
+    coursePrice: 'Kurs narxi (UZS)',
+    installmentPrice: 'Bolib-bolib tolash narxi (UZS)',
+    numberOfMonths: 'Oylar soni',
+    startDate: 'Boshlanish sanasi',
+    monthlyPayment: 'Oylik tolov',
+    remainingBalance: 'Qolgan balans',
+    saveClient: 'Mijozni saqlash',
+    clientSaved: 'Mijoz muvaffaqiyatli saqlandi',
+    
+    // Client Detail
+    profile: 'Profil',
+    paymentSchedule: 'Tolov jadvali',
+    paymentHistory: 'Tolov tarixi',
+    totalPrice: 'Jami narx',
+    paidSoFar: 'Hozirgacha tolangan',
+    remaining: 'Qolgan',
+    markAsPaid: 'Tolangan deb belgilash',
+    paymentAmount: 'Tolov summasi',
+    paymentDate: 'Tolov sanasi',
+    note: 'Eslatma',
+    month: 'Oy',
+    dueDate: 'Tolov muddati',
+    amount: 'Summa',
+    noPayments: 'Hali tolovlar qayd etilmagan',
+    
+    // Status
+    statusPaying: 'Tolayotgan',
+    statusOverdue: 'Muddati otgan',
+    statusCompleted: 'Tugallangan',
+  }
+};
+
+export type TranslationKey = keyof typeof translations.en;
