@@ -213,7 +213,7 @@ export function ClientDetail() {
                 <div>
                   <p className="text-xs text-[#6B7B7D] mb-1">{t('totalPrice')}</p>
                   <p className="font-bold text-[#0B3A3E] font-mono text-sm">
-                    {formatCurrency(client.coursePrice)}
+                    {formatCurrency(client.installmentPrice)}
                   </p>
                 </div>
                 <div>
