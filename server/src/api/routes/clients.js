@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../../db');
 const { addMonths, format, parseISO, isBefore, startOfDay } = require('date-fns');
+const { sendAddedToSystem } = require('../../bot');
 
 // ─── Helpers (same logic as original frontend) ────────────────────────────────
 
@@ -144,7 +145,13 @@ router.post('/', async (req, res) => {
       [result.rows[0].id]
     );
 
-    res.status(201).json(formatClient(clientRes.rows[0], []));
+    const newClient = clientRes.rows[0];
+    res.status(201).json(formatClient(newClient, []));
+
+    // Notify user via Telegram
+    if (newClient.telegram_id) {
+      sendAddedToSystem(newClient.telegram_id, newClient.language).catch(console.error);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
