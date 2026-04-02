@@ -40,6 +40,7 @@ import {
   CheckCircle,
   Send,
   X,
+  Trash2,
 } from 'lucide-react';
 import { format, addMonths, parseISO } from 'date-fns';
 
@@ -47,9 +48,10 @@ export function ClientDetail() {
   const { id } = useParams<{ id: string }>();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { getClient, addPayment, clearMonthPayments, sendReminder } = useClients();
+  const { getClient, addPayment, clearMonthPayments, sendReminder, deleteClient } = useClients();
   const [reminderSending, setReminderSending] = useState<number | null>(null);
   const [clearMonthTarget, setClearMonthTarget] = useState<number | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [paymentForm, setPaymentForm] = useState({
     amount: '',
@@ -146,19 +148,30 @@ export function ClientDetail() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/clients')}
+            className="text-[#0B3A3E] hover:bg-[#0B3A3E]/10"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-[#0B3A3E]">{client.fullName}</h1>
+            <StatusBadge status={client.status} />
+          </div>
+        </div>
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate('/clients')}
-          className="text-[#0B3A3E] hover:bg-[#0B3A3E]/10"
+          onClick={() => setIsDeleteDialogOpen(true)}
+          className="text-red-400 hover:bg-red-50 hover:text-red-600"
+          title="Remove client"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <Trash2 className="w-5 h-5" />
         </Button>
-        <div>
-          <h1 className="text-2xl font-bold text-[#0B3A3E]">{client.fullName}</h1>
-          <StatusBadge status={client.status} />
-        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -488,6 +501,30 @@ export function ClientDetail() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Remove Client Confirmation */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove {client.fullName}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete the client and all their payment history from the database. They will need to register again through the Telegram bot. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                await deleteClient(client.id);
+                navigate('/clients');
+              }}
+              className="bg-red-500 text-white hover:bg-red-600"
+            >
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Clear Payment Confirmation */}
       <AlertDialog open={clearMonthTarget !== null} onOpenChange={() => setClearMonthTarget(null)}>

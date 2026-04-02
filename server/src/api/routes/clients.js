@@ -165,7 +165,7 @@ router.delete('/:id', async (req, res) => {
 
     const userId = clientRes.rows[0].user_id;
     await pool.query('DELETE FROM clients WHERE id = $1', [req.params.id]);
-    await pool.query("UPDATE users SET status = 'inactive' WHERE id = $1", [userId]);
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
 
     res.json({ success: true });
   } catch (err) {
