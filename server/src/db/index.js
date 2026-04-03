@@ -8,6 +8,10 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
+pool.on('error', (err) => {
+  console.error('Idle DB client error:', err.message);
+});
+
 async function initDb() {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
   await pool.query(schema);
