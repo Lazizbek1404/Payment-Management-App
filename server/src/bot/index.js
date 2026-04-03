@@ -28,6 +28,11 @@ function getMenuKeyboard(lang) {
   return Markup.keyboard([getMsg(lang).menuKeyboard]).resize().persistent();
 }
 
+const ADMIN_KEYBOARD = Markup.keyboard([
+  ["📊 Statistika", "⚠️ Muddati o'tganlar"],
+  ["🆕 Tasdiqlanmaganlar"],
+]).resize().persistent();
+
 async function getUserLang(telegramId) {
   const res = await pool.query('SELECT language FROM users WHERE telegram_id = $1', [telegramId]);
   return res.rows[0]?.language || 'uz';
@@ -49,7 +54,8 @@ bot.start(async (ctx) => {
     ).catch((err) => console.error('admin save error:', err));
 
     return ctx.reply(
-      "👋 Salom, Admin!\n\nMavjud buyruqlar:\n/overdue — Muddati o'tgan to'lovlar\n/stats — Umumiy statistika"
+      "👋 Salom, Admin!\n\nQuyidagi tugmalardan foydalaning:",
+      ADMIN_KEYBOARD
     );
   }
 
@@ -77,8 +83,7 @@ bot.start(async (ctx) => {
 });
 
 // ─── Admin commands (registered BEFORE bot.on('text')) ────────────────────────
-bot.command('overdue', async (ctx) => {
-  if (!isAdmin(ctx)) return;
+async function handleOverdue(ctx) {
   try {
     const result = await pool.query(`
       SELECT u.full_name, u.phone_number, c.remaining_balance, c.next_payment_date
@@ -100,16 +105,15 @@ bot.command('overdue', async (ctx) => {
     console.error('overdue error:', err);
     return ctx.reply('Xatolik yuz berdi.');
   }
-});
+}
 
-bot.command('stats', async (ctx) => {
-  if (!isAdmin(ctx)) return;
+async function handleStats(ctx) {
   try {
     const [totalRes, overdueRes, collectedRes, pendingRes] = await Promise.all([
       pool.query('SELECT COUNT(*) FROM clients'),
       pool.query("SELECT COUNT(*) FROM clients WHERE status = 'overdue'"),
       pool.query("SELECT COALESCE(SUM(amount), 0) AS total FROM payments WHERE cancelled = false AND overpayment = false"),
-      pool.query("SELECT COUNT(*) FROM users WHERE status = 'inactive'"),
+      pool.query("SELECT COUNT(*) FROM users WHERE verified = false"),
     ]);
 
     return ctx.reply(
@@ -117,12 +121,51 @@ bot.command('stats', async (ctx) => {
       `👥 Jami mijozlar: ${totalRes.rows[0].count}\n` +
       `⚠️ Muddati o'tgan: ${overdueRes.rows[0].count}\n` +
       `💰 Jami yig'ilgan: ${formatCurrency(parseInt(collectedRes.rows[0].total))}\n` +
-      `📝 Ro'yxatdan o'tganlar (qo'shilmagan): ${pendingRes.rows[0].count}`
+      `🆕 Tasdiqlanmaganlar: ${pendingRes.rows[0].count}`
     );
   } catch (err) {
     console.error('stats error:', err);
     return ctx.reply('Xatolik yuz berdi.');
   }
+}
+
+bot.command('overdue', async (ctx) => {
+  if (!isAdmin(ctx)) return;
+  return handleOverdue(ctx);
+});
+
+bot.command('stats', async (ctx) => {
+  if (!isAdmin(ctx)) return;
+  return handleStats(ctx);
+});
+
+async function handlePending(ctx) {
+  try {
+    const result = await pool.query(
+      `SELECT telegram_id, full_name, phone_number, national_id FROM users WHERE verified = false ORDER BY registered_at ASC`
+    );
+
+    if (result.rows.length === 0) return ctx.reply("✅ Tasdiqlanmagan foydalanuvchilar yo'q!");
+
+    for (const u of result.rows) {
+      await ctx.reply(
+        `👤 ${u.full_name}\n📞 ${u.phone_number}\n🪪 ${u.national_id || '—'}`,
+        {
+          reply_markup: {
+            inline_keyboard: [[{ text: '✅ Tasdiqlash', callback_data: `verify_${u.telegram_id}` }]],
+          },
+        }
+      );
+    }
+  } catch (err) {
+    console.error('pending error:', err);
+    return ctx.reply('Xatolik yuz berdi.');
+  }
+}
+
+bot.command('pending', async (ctx) => {
+  if (!isAdmin(ctx)) return;
+  return handlePending(ctx);
 });
 
 // ─── Inline callbacks ─────────────────────────────────────────────────────────
@@ -193,7 +236,13 @@ bot.action('noop', (ctx) => ctx.answerCbQuery());
 
 // ─── Text messages (registered AFTER commands) ────────────────────────────────
 bot.on('text', async (ctx) => {
-  if (isAdmin(ctx)) return;
+  if (isAdmin(ctx)) {
+    const text = ctx.message.text.trim();
+    if (text === '📊 Statistika') return handleStats(ctx);
+    if (text === "⚠️ Muddati o'tganlar") return handleOverdue(ctx);
+    if (text === '🆕 Tasdiqlanmaganlar') return handlePending(ctx);
+    return;
+  }
 
   const telegramId = ctx.from.id;
   const text = ctx.message.text.trim();
